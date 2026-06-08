@@ -44,14 +44,6 @@ function Home() {
     <div className="min-h-screen bg-background">
       <SiteHeader />
       <main className="mx-auto max-w-5xl px-4 pb-16 pt-5">
-        <section className="mb-5">
-          <h1 className="text-2xl font-bold leading-tight tracking-tight sm:text-3xl">
-            Find your next ride
-          </h1>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Browse the latest cars for sale.
-          </p>
-        </section>
 
         <div className="sticky top-14 z-30 -mx-4 mb-4 bg-background/90 px-4 py-2 backdrop-blur">
           <div className="relative">
