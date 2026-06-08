@@ -20,6 +20,7 @@ export function CarForm({ car, onDone, onCancel }: Props) {
   const [fuelType, setFuelType] = useState(car?.fuel_type ?? FUEL_TYPES[0]);
   const [transmission, setTransmission] = useState(car?.transmission ?? TRANSMISSIONS[0]);
   const [description, setDescription] = useState(car?.description ?? "");
+  const [contactPhone, setContactPhone] = useState(car?.contact_phone ?? "");
   const [images, setImages] = useState<string[]>(car?.images ?? []);
   const [previews, setPreviews] = useState<Record<string, string>>({});
   const [saving, setSaving] = useState(false);
@@ -77,6 +78,7 @@ export function CarForm({ car, onDone, onCancel }: Props) {
       fuel_type: fuelType,
       transmission,
       description: description.trim() || null,
+      contact_phone: contactPhone.trim() || null,
       images,
     };
     const res = car
@@ -99,9 +101,9 @@ export function CarForm({ car, onDone, onCancel }: Props) {
         <div className="grid grid-cols-2 gap-3">
           <Field label="Brand"><Input value={brand} onChange={(e) => setBrand(e.target.value)} required maxLength={50} /></Field>
           <Field label="Model"><Input value={model} onChange={(e) => setModel(e.target.value)} required maxLength={50} /></Field>
-          <Field label="Price (USD)"><Input type="number" min={0} value={price} onChange={(e) => setPrice(e.target.value)} required /></Field>
+          <Field label="Price (LEK)"><Input type="number" min={0} value={price} onChange={(e) => setPrice(e.target.value)} required /></Field>
           <Field label="Year"><Input type="number" min={1900} max={2100} value={year} onChange={(e) => setYear(e.target.value)} required /></Field>
-          <Field label="Mileage"><Input type="number" min={0} value={mileage} onChange={(e) => setMileage(e.target.value)} /></Field>
+          <Field label="Mileage (km)"><Input type="number" min={0} value={mileage} onChange={(e) => setMileage(e.target.value)} /></Field>
           <Field label="Fuel type">
             <Select value={fuelType} onValueChange={setFuelType}>
               <SelectTrigger><SelectValue /></SelectTrigger>
@@ -115,6 +117,16 @@ export function CarForm({ car, onDone, onCancel }: Props) {
             </Select>
           </Field>
         </div>
+
+        <Field label="Contact phone (seller)">
+          <Input
+            type="tel"
+            value={contactPhone}
+            onChange={(e) => setContactPhone(e.target.value)}
+            placeholder="+355 68 123 4567"
+            maxLength={30}
+          />
+        </Field>
 
         <Field label="Description">
           <Textarea value={description} onChange={(e) => setDescription(e.target.value)} rows={5} maxLength={4000} />

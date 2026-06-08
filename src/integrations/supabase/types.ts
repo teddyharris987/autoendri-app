@@ -17,6 +17,7 @@ export type Database = {
       cars: {
         Row: {
           brand: string
+          contact_phone: string | null
           created_at: string
           description: string | null
           fuel_type: string
@@ -31,6 +32,7 @@ export type Database = {
         }
         Insert: {
           brand: string
+          contact_phone?: string | null
           created_at?: string
           description?: string | null
           fuel_type: string
@@ -45,6 +47,7 @@ export type Database = {
         }
         Update: {
           brand?: string
+          contact_phone?: string | null
           created_at?: string
           description?: string | null
           fuel_type?: string

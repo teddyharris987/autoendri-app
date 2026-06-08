@@ -11,6 +11,7 @@ export type Car = {
   transmission: string;
   description: string | null;
   images: string[];
+  contact_phone: string | null;
   created_at: string;
   updated_at: string;
 };
@@ -29,11 +30,11 @@ export async function signImages(paths: string[]): Promise<string[]> {
 }
 
 export function formatPrice(n: number) {
-  return new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(n);
+  return new Intl.NumberFormat("sq-AL", { maximumFractionDigits: 0 }).format(n) + " LEK";
 }
 
 export function formatMileage(n: number) {
-  return new Intl.NumberFormat("en-US").format(n) + " mi";
+  return new Intl.NumberFormat("sq-AL").format(n) + " km";
 }
 
 // WhatsApp number in international format, digits only
