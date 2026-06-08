@@ -1,13 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { ArrowLeft, Calendar, Fuel, Gauge, MessageCircle, Settings2 } from "lucide-react";
+import { ArrowLeft, Calendar, Fuel, Gauge, MessageCircle, Phone, Settings2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { SiteHeader } from "@/components/SiteHeader";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { toast } from "sonner";
 import { type Car, WHATSAPP_NUMBER, formatMileage, formatPrice, signImages } from "@/lib/cars";
 
 export const Route = createFileRoute("/cars/$id")({
@@ -64,8 +59,11 @@ function CarDetails() {
   }
 
   const title = `${car.brand} ${car.model}`;
-  const waText = encodeURIComponent(`Hi, I'm interested in your ${car.year} ${title} listed for ${formatPrice(car.price)}.`);
-  const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${waText}`;
+  const rawPhone = (car.contact_phone || "").replace(/[^\d]/g, "");
+  const waNumber = rawPhone || WHATSAPP_NUMBER;
+  const waText = encodeURIComponent(`Përshëndetje, jam i interesuar për ${car.year} ${title} (${formatPrice(car.price)}).`);
+  const waUrl = `https://wa.me/${waNumber}?text=${waText}`;
+  const telUrl = `tel:+${waNumber}`;
 
   return (
     <div className="min-h-screen bg-background pb-32">
@@ -120,12 +118,16 @@ function CarDetails() {
             <p className="whitespace-pre-wrap text-sm leading-relaxed">{car.description}</p>
           </section>
         )}
-
-        <ContactForm carId={car.id} />
       </main>
 
       <div className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background/95 px-4 py-3 backdrop-blur">
         <div className="mx-auto flex max-w-3xl gap-2">
+          <a
+            href={telUrl}
+            className="flex h-12 flex-1 items-center justify-center gap-2 rounded-full bg-primary text-base font-semibold text-primary-foreground transition active:scale-[0.98]"
+          >
+            <Phone className="h-5 w-5" /> Call
+          </a>
           <a
             href={waUrl}
             target="_blank"
@@ -147,57 +149,5 @@ function Spec({ icon, label, value }: { icon: React.ReactNode; label: string; va
       <div className="flex items-center gap-1.5 text-xs text-muted-foreground">{icon}{label}</div>
       <div className="mt-1 truncate text-sm font-semibold">{value}</div>
     </div>
-  );
-}
-
-function ContactForm({ carId }: { carId: string }) {
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [message, setMessage] = useState("");
-  const [sending, setSending] = useState(false);
-
-  async function submit(e: React.FormEvent) {
-    e.preventDefault();
-    if (!name.trim() || !phone.trim() || !message.trim()) {
-      toast.error("Please fill in all fields");
-      return;
-    }
-    setSending(true);
-    const { error } = await supabase.from("contact_messages").insert({
-      name: name.trim().slice(0, 100),
-      phone: phone.trim().slice(0, 30),
-      message: message.trim().slice(0, 2000),
-      car_id: carId,
-    });
-    setSending(false);
-    if (error) {
-      toast.error("Could not send message");
-      return;
-    }
-    toast.success("Message sent! We'll be in touch.");
-    setName("");
-    setPhone("");
-    setMessage("");
-  }
-
-  return (
-    <form onSubmit={submit} className="mt-5 space-y-3 rounded-2xl bg-card p-4" style={{ boxShadow: "var(--shadow-card)" }}>
-      <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">Send a message</h2>
-      <div className="space-y-1.5">
-        <Label htmlFor="name">Name</Label>
-        <Input id="name" value={name} onChange={(e) => setName(e.target.value)} maxLength={100} className="h-11" />
-      </div>
-      <div className="space-y-1.5">
-        <Label htmlFor="phone">Phone</Label>
-        <Input id="phone" value={phone} onChange={(e) => setPhone(e.target.value)} maxLength={30} className="h-11" />
-      </div>
-      <div className="space-y-1.5">
-        <Label htmlFor="msg">Message</Label>
-        <Textarea id="msg" value={message} onChange={(e) => setMessage(e.target.value)} maxLength={2000} rows={4} />
-      </div>
-      <Button type="submit" disabled={sending} className="h-11 w-full text-base">
-        {sending ? "Sending…" : "Send message"}
-      </Button>
-    </form>
   );
 }
