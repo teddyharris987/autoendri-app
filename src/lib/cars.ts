@@ -30,7 +30,7 @@ export async function signImages(paths: string[]): Promise<string[]> {
 }
 
 export function formatPrice(n: number) {
-  return new Intl.NumberFormat("sq-AL", { maximumFractionDigits: 0 }).format(n) + " LEK";
+  return new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(n);
 }
 
 export function formatMileage(n: number) {

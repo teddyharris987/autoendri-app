@@ -101,7 +101,7 @@ export function CarForm({ car, onDone, onCancel }: Props) {
         <div className="grid grid-cols-2 gap-3">
           <Field label="Brand"><Input value={brand} onChange={(e) => setBrand(e.target.value)} required maxLength={50} /></Field>
           <Field label="Model"><Input value={model} onChange={(e) => setModel(e.target.value)} required maxLength={50} /></Field>
-          <Field label="Price (LEK)"><Input type="number" min={0} value={price} onChange={(e) => setPrice(e.target.value)} required /></Field>
+          <Field label="Price (€)"><Input type="number" min={0} value={price} onChange={(e) => setPrice(e.target.value)} required /></Field>
           <Field label="Year"><Input type="number" min={1900} max={2100} value={year} onChange={(e) => setYear(e.target.value)} required /></Field>
           <Field label="Mileage (km)"><Input type="number" min={0} value={mileage} onChange={(e) => setMileage(e.target.value)} /></Field>
           <Field label="Fuel type">
