@@ -36,8 +36,8 @@ export function formatMileage(n: number) {
   return new Intl.NumberFormat("en-US").format(n) + " mi";
 }
 
-// CHANGE THIS to your real WhatsApp number (international format, digits only)
-export const WHATSAPP_NUMBER = "1234567890";
+// WhatsApp number in international format, digits only
+export const WHATSAPP_NUMBER = "355684349039";
 
 export const FUEL_TYPES = ["Petrol", "Diesel", "Hybrid", "Electric", "LPG"] as const;
 export const TRANSMISSIONS = ["Manual", "Automatic"] as const;
